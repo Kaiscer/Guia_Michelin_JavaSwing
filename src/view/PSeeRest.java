@@ -2,7 +2,7 @@ package view;
 
 import javax.swing.JPanel;
 
-import control.AppController;
+import control.RestControl;
 import db.RestContract;
 
 import javax.swing.JLabel;
@@ -135,7 +135,7 @@ public class PSeeRest extends JPanel {
 		setLocation((pantalla.width - ventana.width) / 2,  (pantalla.height - ventana.height) / 2);
 	}
 	
-	public void setControl(AppController control) {
+	public void setControl(RestControl control) {
 		btnSee.addActionListener(control);
 	}
 }

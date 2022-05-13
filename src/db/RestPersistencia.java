@@ -20,7 +20,7 @@ public class RestPersistencia {
 									RestContract.COLUMN_CIUDAD + ", " + 
 									RestContract.COLUMN_DISTIN + ", " + 
 									RestContract.COLUMN_COCINA + ", " +
-									RestContract.COLUMN_PREC_MIN ||  ' - '  || RestContract.COLUMN_PREC_MAX ;
+									RestContract.COLUMN_PREC_MIN + RestContract.COLUMN_PREC_MAX ;
 									
 		
 		

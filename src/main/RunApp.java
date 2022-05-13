@@ -2,7 +2,8 @@ package main;
 
 import java.awt.EventQueue;
 
-import control.AppController;
+import control.RestControl;
+import db.RestPersistencia;
 import view.WPrincipal;
 import view.PSeeRest;
 
@@ -19,7 +20,9 @@ public class RunApp {
 				
 				PSeeRest wS = new PSeeRest();
 				
-				AppController control = new AppController(wP, wS);
+				RestPersistencia rP = new RestPersistencia();
+				
+				RestControl control = new RestControl(wP, wS, rP);
 				
 				wP.hacerVisible();
 				

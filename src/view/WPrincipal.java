@@ -13,7 +13,7 @@ import javax.swing.JMenu;
 import java.awt.Color;
 import javax.swing.JSeparator;
 
-import control.AppController;
+import control.RestControl;
 
 
 public class WPrincipal extends JFrame {
@@ -98,7 +98,7 @@ public class WPrincipal extends JFrame {
 		scrollContainer.setViewportView(panel);
 	}
 	
-	public void setControl(AppController control) {
+	public void setControl(RestControl control) {
 		
 		jMItemSee.addActionListener(control);
 		

@@ -13,7 +13,7 @@ import model.Rest;
 import view.WPrincipal;
 import view.PSeeRest;
 
-public class AppController implements ActionListener {
+public class RestControl implements ActionListener {
 	
 	private static ArrayList<Rest> listRest;
 		WPrincipal wP;
@@ -23,7 +23,7 @@ public class AppController implements ActionListener {
 		
 		
 
-	public AppController(WPrincipal wP, PSeeRest wS, RestPersistencia rP) {
+	public RestControl(WPrincipal wP, PSeeRest wS, RestPersistencia rP) {
 			this.wP = wP;
 			this.pS = wS;
 			this.rP = rP;
