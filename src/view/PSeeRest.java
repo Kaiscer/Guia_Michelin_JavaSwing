@@ -4,11 +4,13 @@ import javax.swing.JPanel;
 
 import control.RestControl;
 import db.RestContract;
+import model.Rest;
 
 import javax.swing.JLabel;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import javax.swing.ComboBoxModel;
@@ -22,14 +24,12 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.Font;
 
 public class PSeeRest extends JPanel {
-	public static final int ANCHO = 700;
-	public static final int ALTO = 500;
+	public static final int ANCHO = 800;
+	public static final int ALTO = 650;
 	public static final String BTN_SEE = "Consultar";
 	public static final String BTN_DELETE = "Eliminar";
-	public static final String [] REGIONES = {"Todas", "Andalucia", "Asturias", "Isla baleares", "Cantabria",
-			"Casttilla - La Mancha", "Cataluña", "Extremadura", "Madird", "Murcia", "Navarra", "País Vasco","La Rioja", "Comunidad Valenciana"}; 
 	public static final String COLUM_PRECIO = "PRECIO";
-	public static final String [] DISTINCION = {"1 Estrella", "2 Estrella", "3 Estrella"};
+	
 	
 	private JComboBox<String> cmbRegion;
 	private JComboBox<String> cmbDistincion;
@@ -59,7 +59,7 @@ public class PSeeRest extends JPanel {
 		
 		cmbRegion = new JComboBox<String>();
 		cmbRegion.setBounds(74, 83, 178, 27);
-		cmbRegion.setModel(new DefaultComboBoxModel<String>(REGIONES));
+		cmbRegion.setModel(new DefaultComboBoxModel<String>(Rest.REGIONES));
 		add(cmbRegion);
 		
 		setSize(ANCHO,ALTO);
@@ -70,16 +70,16 @@ public class PSeeRest extends JPanel {
 		
 		cmbDistincion = new JComboBox<String>();
 		cmbDistincion.setBounds(389, 83, 109, 27);
-		cmbDistincion.setModel(new DefaultComboBoxModel<String>(DISTINCION));
+		cmbDistincion.setModel(new DefaultComboBoxModel<String>(Rest.DISTIN));
 		add(cmbDistincion);
 		
 		btnSee = new JButton(BTN_SEE);
-		btnSee.setBounds(381, 154, 117, 29);
+		btnSee.setBounds(536, 163, 117, 29);
 		add(btnSee);
 		
 		scrollTable = new JScrollPane();
 		scrollTable.setVisible(false);
-		scrollTable.setBounds(19, 204, 555, 316);
+		scrollTable.setBounds(19, 204, 634, 316);
 		add(scrollTable);
 		
 		tableRest = new JTable();
@@ -87,11 +87,17 @@ public class PSeeRest extends JPanel {
 		scrollTable.setViewportView(tableRest);
 		
 		btnDelete = new JButton(BTN_DELETE);
-		btnDelete.setBounds(426, 532, 117, 29);
+		btnDelete.setBounds(536, 532, 117, 29);
 		add(btnDelete);
 		centerWs();
 		
 	}
+	
+	public void hacerVisible(boolean b) {
+		
+		scrollTable.setVisible(b);
+	}
+	
 	private void configTable() {
 		
 		tModel = new DefaultTableModel() {
@@ -110,11 +116,11 @@ public class PSeeRest extends JPanel {
 		tModel.addColumn(RestContract.COLUMN_COCINA);
 		tModel.addColumn(COLUM_PRECIO);
 		
-		tableRest.getColumn(RestContract.COLUMN_NOMBRE).setPreferredWidth(75);
-		tableRest.getColumn(RestContract.COLUMN_CIUDAD).setPreferredWidth(75);
-		tableRest.getColumn(RestContract.COLUMN_DISTIN).setPreferredWidth(75);
-		tableRest.getColumn(RestContract.COLUMN_COCINA).setPreferredWidth(75);
-		tableRest.getColumn(COLUM_PRECIO).setPreferredWidth(85);		
+		tableRest.getColumn(RestContract.COLUMN_NOMBRE).setPreferredWidth(100);
+		tableRest.getColumn(RestContract.COLUMN_CIUDAD).setPreferredWidth(100);
+		tableRest.getColumn(RestContract.COLUMN_DISTIN).setPreferredWidth(50);
+		tableRest.getColumn(RestContract.COLUMN_COCINA).setPreferredWidth(60);
+		tableRest.getColumn(COLUM_PRECIO).setPreferredWidth(95);		
 	
 		
 		
@@ -142,5 +148,38 @@ public class PSeeRest extends JPanel {
 	public JComboBox<String> getcmbRegion() {
 		
 		return cmbRegion;
+	}
+	
+	public JComboBox<String> getCmbDistincion(){
+		
+		return cmbDistincion;
+	}
+	
+	
+	public void fillTable(ArrayList<Rest> listRest) {
+		
+		tModel.getDataVector().clear();
+		
+		Object[]row = new Object [5];
+		
+		for (Rest rest : listRest) {
+			
+			row [0] = rest.getNombre();
+			row [1] = rest.getCiudad();
+			if (rest.getDistincion() == 1) {
+				row [2] = "*";
+			}else if(rest.getDistincion() == 2) {
+				row [2] = "**";
+			}else {
+				row [2] = "***";
+			}
+			
+			row [3] = rest.getCocina();
+			row [4] = rest.getPrecio_Min()+"€" + " - " + rest.getPrecio_Max()+"€";
+			
+			tModel.addRow(row);
+		}
+		
+		
 	}
 }

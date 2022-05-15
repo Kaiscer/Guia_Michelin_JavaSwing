@@ -11,22 +11,25 @@ import javax.swing.JOptionPane;
 import db.RestPersistencia;
 import model.Rest;
 import view.WPrincipal;
+import view.PAddRest;
 import view.PSeeRest;
 
 public class RestControl implements ActionListener {
 	
 	private static ArrayList<Rest> listRest;
 		WPrincipal wP;
-		PSeeRest pS;
+		PSeeRest pSee;
 		RestPersistencia rP;
+		PAddRest pAdd;
 		
 		
 		
 
-	public RestControl(WPrincipal wP, PSeeRest wS, RestPersistencia rP) {
+	public RestControl(WPrincipal wP, PSeeRest wS, RestPersistencia rP, PAddRest pAdd) {
 			this.wP = wP;
-			this.pS = wS;
+			this.pSee = wS;
 			this.rP = rP;
+			this.pAdd = pAdd;
 			listRest = new ArrayList<Rest>();
 		}
 
@@ -39,7 +42,13 @@ public class RestControl implements ActionListener {
 			
 			if (e.getActionCommand().equals(WPrincipal.ITEM_SEE)) {
 //				System.out.println("Test");
-				wP.uploadPanel(pS);
+				wP.uploadPanel(pSee);
+				pSee.hacerVisible(false);
+		
+				
+			}else if (e.getActionCommand().equals(WPrincipal.ITEM_ADD)) {
+				wP.uploadPanel(pAdd);
+				
 				
 			}else if (e.getActionCommand().equals(WPrincipal.ITEM_EXIT)) {
 				
@@ -52,17 +61,13 @@ public class RestControl implements ActionListener {
 			}
 		}else if (e.getSource() instanceof JButton){
 			if (e.getActionCommand().equals(PSeeRest.BTN_SEE)) {
-			
-				
-				
-				for (int i = 0; i < PSeeRest.REGIONES.length; i++) {
-					
-					
-				}
-					
+				if (pSee.getcmbRegion().getSelectedIndex() == 0 && pSee.getCmbDistincion().getSelectedIndex()== 0) {
+					//System.out.println("testButton");
 					listRest = rP.seeRest();
-				
-					
+					pSee.fillTable(listRest);
+					pSee.hacerVisible(true);
+				}									
+
 			
 				
 				

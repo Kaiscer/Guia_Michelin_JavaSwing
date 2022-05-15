@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import control.RestControl;
 import db.RestPersistencia;
 import view.WPrincipal;
+import view.PAddRest;
 import view.PSeeRest;
 
 public class RunApp {
@@ -22,13 +23,17 @@ public class RunApp {
 				
 				RestPersistencia rP = new RestPersistencia();
 				
-				RestControl control = new RestControl(wP, wS, rP);
+				PAddRest pAdd = new PAddRest();
+				
+				RestControl control = new RestControl(wP, wS, rP, pAdd);
 				
 				wP.hacerVisible();
 				
 				wP.setControl(control);
 				
 				wS.setControl(control);
+				
+				pAdd.setControl(control);
 				
 			}
 		});

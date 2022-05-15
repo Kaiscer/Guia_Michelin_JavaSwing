@@ -17,10 +17,10 @@ import control.RestControl;
 
 
 public class WPrincipal extends JFrame {
-	public static final int ANCHO = 700;
-	public static final int ALTO = 500;
+	public static final int ANCHO = 800;
+	public static final int ALTO = 600;
 	public static final String ITEM_SEE = "Consultar Restaurantes";
-	public static final String ITEM_RESGITRO = "Registro de Restaurante";
+	public static final String ITEM_ADD = "Registro de Restaurante";
 	public static final String ITEM_MODIFICACION = "Modificación de Restaurante";
 	public static final String ITEM_EXIT = "Salir";
 	
@@ -75,7 +75,7 @@ public class WPrincipal extends JFrame {
 		separator = new JSeparator();
 		mnManageMenu.add(separator);
 		
-		jMItemRegistroRest = new JMenuItem(ITEM_RESGITRO);
+		jMItemRegistroRest = new JMenuItem(ITEM_ADD);
 		mnManageMenu.add(jMItemRegistroRest);
 		
 		separator_1 = new JSeparator();

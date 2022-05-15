@@ -20,12 +20,7 @@ public class RestPersistencia {
 	public ArrayList<Rest> seeRest() {
 		ArrayList<Rest> listRest = new ArrayList<Rest>();
 		
-		String query  = "SELECT " + RestContract.COLUMN_NOMBRE + ", " + 
-									RestContract.COLUMN_CIUDAD + ", " + 
-									RestContract.COLUMN_DISTIN + ", " + 
-									RestContract.COLUMN_COCINA + ", " +
-									RestContract.COLUMN_PREC_MIN + ", " + 
-									RestContract.COLUMN_PREC_MAX + " FROM " + RestContract.NOMBRE_TABLA;
+		String query  = "SELECT * " +  " FROM " + RestContract.NOMBRE_TABLA;
 									
 		
 		Connection con = null;
@@ -41,45 +36,59 @@ public class RestPersistencia {
 			rslt = stml.executeQuery(query);
 			
 		Rest rest;
+		int id;
 		String nombre;
+		String region;
 		String ciudad;
-		String disti;
+		int disti;
+		String direc;
 		String cocina;
-		String pMax;
-		String pMin;
+		double pMax;
+		double pMin;
+		String telefono;
+		String web;
 		
 		while (rslt.next()) {
 			
+			id = rslt.getInt(1);
 			nombre = rslt.getString(2);
-			ciudad = rslt.getString(3);
-			disti = rslt.getString(4);
-			cocina = rslt.getString(5);
-			pMax = rslt.getString(6);
-			pMin = rslt.getString(7);
+			region = rslt.getString(3);
+			ciudad = rslt.getString(4);
+			disti = rslt.getInt(5);
+			direc = rslt.getString(6);
+			pMin = rslt.getDouble(7);
+			pMax = rslt.getDouble(8);
+			cocina = rslt.getString(9);
+			telefono = rslt.getString(10);
+			web = rslt.getString(11);
 			
+			rest = new Rest(id, nombre, region, ciudad, disti, direc, pMin, pMax, cocina, telefono, web);
 			
+			listRest.add(rest);
 		}
 					
 					
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("El driver indicado no es correcto");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error en la base de datos");
 			e.printStackTrace();
+		}finally {
+			try {
+				if (rslt != null) rslt.close(); 
+				if (stml != null) stml.close();	
+				if (con != null) con.close();
+				
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		
 		return listRest;
 	}
+	
 
 }
