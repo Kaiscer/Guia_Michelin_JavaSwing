@@ -138,4 +138,9 @@ public class PSeeRest extends JPanel {
 	public void setControl(RestControl control) {
 		btnSee.addActionListener(control);
 	}
+	
+	public JComboBox<String> getcmbRegion() {
+		
+		return cmbRegion;
+	}
 }

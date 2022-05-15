@@ -38,7 +38,7 @@ public class RestControl implements ActionListener {
 		if (e.getSource() instanceof JMenuItem) {
 			
 			if (e.getActionCommand().equals(WPrincipal.ITEM_SEE)) {
-				System.out.println("Test");
+//				System.out.println("Test");
 				wP.uploadPanel(pS);
 				
 			}else if (e.getActionCommand().equals(WPrincipal.ITEM_EXIT)) {
@@ -52,8 +52,20 @@ public class RestControl implements ActionListener {
 			}
 		}else if (e.getSource() instanceof JButton){
 			if (e.getActionCommand().equals(PSeeRest.BTN_SEE)) {
+			
 				
-				listRest = rP.seeRest();
+				
+				for (int i = 0; i < PSeeRest.REGIONES.length; i++) {
+					
+					
+				}
+					
+					listRest = rP.seeRest();
+				
+					
+			
+				
+				
 				
 			}
 			
