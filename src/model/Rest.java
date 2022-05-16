@@ -3,15 +3,10 @@ package model;
 
 
 public class Rest {
-	public static final String [] DISTIN = {"Todas", "1 Estrella", "2 Estrellas", "3 Estrellas"};
-
-	public static final String [] REGIONES = {"Todas", "Andalucía","Aragón","Asturias",	"Islas Baleares", "Cantabria",
-			"Islas Canarias", "Castilla - La Mancha", "Castilla y León", "Cataluña", "Galicia", "Extremadura", "Madrid", 
-			"Murcia", "Navarra", "País Vasco", "La Rioja", "Comunidad Valenciana"}; 
-	 
-	public static final String [] COCINA = {"Creativa", "Moderna", "Tradicional", "Regional", "Fusión"};
 	
-	private int id;
+	
+	
+	//private int id;
 	private String nombre;	
 	private String region;
 	private String ciudad;
@@ -23,9 +18,9 @@ public class Rest {
 	private String telefono;
 	private String web;
 	
-	public Rest(int id , String nombre, String region, String ciudad, int distincion, String direccion, double precio_Min,
+	public Rest( String nombre, String region, String ciudad, int distincion, String direccion, double precio_Min,
 			double precio_Max, String cocina, String telefono, String web) {
-		this.id = id;
+
 		this.nombre = nombre;
 		this.region = region;
 		this.ciudad = ciudad;

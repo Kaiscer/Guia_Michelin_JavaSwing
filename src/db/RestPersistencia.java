@@ -36,7 +36,7 @@ public class RestPersistencia {
 			rslt = stml.executeQuery(query);
 			
 		Rest rest;
-		int id;
+	
 		String nombre;
 		String region;
 		String ciudad;
@@ -50,7 +50,7 @@ public class RestPersistencia {
 		
 		while (rslt.next()) {
 			
-			id = rslt.getInt(1);
+			
 			nombre = rslt.getString(2);
 			region = rslt.getString(3);
 			ciudad = rslt.getString(4);
@@ -62,7 +62,7 @@ public class RestPersistencia {
 			telefono = rslt.getString(10);
 			web = rslt.getString(11);
 			
-			rest = new Rest(id, nombre, region, ciudad, disti, direc, pMin, pMax, cocina, telefono, web);
+			rest = new Rest(nombre, region, ciudad, disti, direc, pMin, pMax, cocina, telefono, web);
 			
 			listRest.add(rest);
 		}

@@ -2,19 +2,33 @@ package view;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 
 import control.RestControl;
 import model.Rest;
 
 import javax.swing.JComboBox;
 import javax.swing.JSpinner;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class PAddRest extends JPanel {
+	
+	public static final String [] REGIONES_ADD = {" - ","Andalucía","Aragón","Asturias",	"Islas Baleares", "Cantabria",
+			"Islas Canarias", "Castilla - La Mancha", "Castilla y León", "Cataluña", "Galicia", "Extremadura", "Madrid", 
+			"Murcia", "Navarra", "País Vasco", "La Rioja", "Comunidad Valenciana"};
+	
+	public static final String [] COCINA = {" - ","Creativa", "Moderna", "Tradicional", "Regional", "Fusión"};
+	
+	public static final String BTN_ADD = "Guardar datos";
+	public static final String BTN_CLEAN = "Limpiar datos";
+	
 	public static final int ANCHO = 750;
 	public static final int ALTO = 550;
 	private JTextField txtNombre;
@@ -26,8 +40,9 @@ public class PAddRest extends JPanel {
 	private JTextField txtPrecioMax;
 	private JSpinner spnDistin;
 	private JTextField txtTlfno;
-	private JTextField textField_1;
+	private JTextField txtWeb;
 	private JButton btnAdd;
+	
 	private JButton btnClean;
 	public PAddRest() {
 		initComponents();
@@ -45,7 +60,7 @@ public class PAddRest extends JPanel {
 		add(lblNameRest);
 		
 		txtNombre = new JTextField();
-		txtNombre.setBounds(166, 85, 203, 26);
+		txtNombre.setBounds(166, 85, 228, 26);
 		add(txtNombre);
 		txtNombre.setColumns(10);
 		
@@ -53,18 +68,20 @@ public class PAddRest extends JPanel {
 		lblConica.setBounds(422, 90, 61, 16);
 		add(lblConica);
 		
-		setSize(ANCHO,ALTO);
 		
-		cmbCocina = new JComboBox<String>(Rest.COCINA);
+		
+		cmbCocina = new JComboBox<String>();
 		cmbCocina.setBounds(495, 86, 123, 27);
+		cmbCocina.setModel(new DefaultComboBoxModel<String>(COCINA));
 		add(cmbCocina);
 		
 		JLabel lblRegion = new JLabel("Región:");
 		lblRegion.setBounds(105, 145, 61, 16);
 		add(lblRegion);
 		
-		cmbRegion = new JComboBox<String>(Rest.DISTIN);
+		cmbRegion = new JComboBox<String>();
 		cmbRegion.setBounds(166, 141, 179, 27);
+		cmbRegion.setModel(new DefaultComboBoxModel<String>(REGIONES_ADD));
 		add(cmbRegion);
 		
 		JLabel lblCiudad = new JLabel("Ciudad:");
@@ -81,7 +98,7 @@ public class PAddRest extends JPanel {
 		add(lblDireccion);
 		
 		txtDirección = new JTextField();
-		txtDirección.setBounds(176, 205, 420, 26);
+		txtDirección.setBounds(176, 205, 483, 26);
 		add(txtDirección);
 		txtDirección.setColumns(10);
 		
@@ -91,6 +108,8 @@ public class PAddRest extends JPanel {
 		
 		spnDistin = new JSpinner();
 		spnDistin.setBounds(176, 273, 51, 26);
+		spnDistin.setEditor(new JSpinner.DefaultEditor(spnDistin));
+		spnDistin.setModel(new SpinnerNumberModel(1, 1, 3, 1));
 		add(spnDistin);
 		
 		JLabel lblPrecioMin = new JLabel("Precio mínimo:");
@@ -124,27 +143,101 @@ public class PAddRest extends JPanel {
 		lblWeb.setBounds(345, 348, 61, 16);
 		add(lblWeb);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(383, 343, 275, 26);
-		add(textField_1);
-		textField_1.setColumns(10);
+		txtWeb = new JTextField();
+		txtWeb.setBounds(383, 343, 275, 26);
+		add(txtWeb);
+		txtWeb.setColumns(10);
 		
-		btnAdd = new JButton("Guardar datos");
+		btnAdd = new JButton(BTN_ADD);
 		btnAdd.setBounds(214, 430, 117, 29);
 		add(btnAdd);
 		
-		btnClean = new JButton("Limpiar datos");
-		btnClean.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnClean.setBounds(434, 430, 117, 29);
+		btnClean = new JButton(BTN_CLEAN);
+		btnClean.setBounds(422, 430, 117, 29);
 		add(btnClean);
+		
+		setSize(ANCHO,ALTO);
+		
 	}
 	public void setControl(RestControl control) {
 		
 		btnAdd.addActionListener(control);
 		btnClean.addActionListener(control);
+		
+		
+	}
+	public Rest getRestaurant() {
+		Rest rest = null;
+		
+		
+		String nombre  = txtNombre.getText().trim();
+				
+		if (nombre.isBlank()) {
+			setError("Debes introducir el nombre");
+			return rest;
+		}
+		
+		String cocina = (String)cmbCocina.getSelectedItem();
+		String region = (String)cmbRegion.getSelectedItem();
+		
+		String ciudad = txtCiudad.getText().trim();
+		
+		if (ciudad.isBlank()) {
+			setError("Debe introducir la ciudad");
+			return rest;
+		}
+		
+		String direc = txtDirección.getText();
+		
+		int disti = (int)spnDistin.getValue();
+		
+		try {
+					
+			double pMin = Double.parseDouble(txtPrecioMin.getText());
+			double pMax = Double.parseDouble(txtPrecioMax.getText());
+			
+			if (pMin == 0 || pMax == 0) {
+				throw new NumberFormatException();
+			}else {
+				if (pMin >= pMax) {
+					setError("El precio mínimo no puede ser superior al máximo");
+				
+				}else {
+					
+					String tlnf = txtTlfno.getText();
+					String web = txtWeb.getText();
+					
+					rest = new Rest(nombre, region, ciudad, disti, direc, pMin, pMax, cocina, tlnf, web);
+				}
+			}
+			
+		}catch (NumberFormatException e) {
+			setError("El precio mínimo como máximo deben ser distintos a 0 y valores numéricos");
+		}
+		
+		
+		
+		return rest;
+		
+		
+	}
+	private void setError(String error) {
+		JOptionPane.showMessageDialog(this, error, "Error de datos",JOptionPane.ERROR_MESSAGE);
+		
+	}
+	public void cleanForm() {
+		
+		txtNombre.setText("");
+		cmbCocina.setSelectedItem(COCINA[0]);
+		cmbRegion.setSelectedItem(REGIONES_ADD[0]);
+		txtCiudad.setText("");
+		txtDirección.setText("");
+		spnDistin.setValue(1);
+		txtPrecioMin.setText("");
+		txtPrecioMax.setText("");
+		txtTlfno.setText("");
+		txtWeb.setText("");
+	
 		
 	}
 }

@@ -25,9 +25,9 @@ public class RestControl implements ActionListener {
 		
 		
 
-	public RestControl(WPrincipal wP, PSeeRest wS, RestPersistencia rP, PAddRest pAdd) {
+	public RestControl(WPrincipal wP, PSeeRest pSee, RestPersistencia rP, PAddRest pAdd) {
 			this.wP = wP;
-			this.pSee = wS;
+			this.pSee = pSee;
 			this.rP = rP;
 			this.pAdd = pAdd;
 			listRest = new ArrayList<Rest>();
@@ -67,11 +67,12 @@ public class RestControl implements ActionListener {
 					pSee.fillTable(listRest);
 					pSee.hacerVisible(true);
 				}									
-
-			
 				
-				
-				
+			}else if (e.getActionCommand().equals(PAddRest.BTN_ADD)) {
+					
+					Rest rest = pAdd.getRestaurant();
+			}else if (e.getActionCommand().equals(PAddRest.BTN_CLEAN)) {
+				pAdd.cleanForm();
 			}
 			
 		}

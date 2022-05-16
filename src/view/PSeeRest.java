@@ -24,6 +24,12 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.Font;
 
 public class PSeeRest extends JPanel {
+	public static final String [] DISTIN = {"Todas", "1 Estrella", "2 Estrellas", "3 Estrellas"};
+
+	public static final String [] REGIONES = {"Todas", "Andalucía","Aragón","Asturias",	"Islas Baleares", "Cantabria",
+			"Islas Canarias", "Castilla - La Mancha", "Castilla y León", "Cataluña", "Galicia", "Extremadura", "Madrid", 
+			"Murcia", "Navarra", "País Vasco", "La Rioja", "Comunidad Valenciana"}; 
+	 
 	public static final int ANCHO = 800;
 	public static final int ALTO = 650;
 	public static final String BTN_SEE = "Consultar";
@@ -59,7 +65,7 @@ public class PSeeRest extends JPanel {
 		
 		cmbRegion = new JComboBox<String>();
 		cmbRegion.setBounds(74, 83, 178, 27);
-		cmbRegion.setModel(new DefaultComboBoxModel<String>(Rest.REGIONES));
+		cmbRegion.setModel(new DefaultComboBoxModel<String>(REGIONES));
 		add(cmbRegion);
 		
 		setSize(ANCHO,ALTO);
@@ -70,7 +76,7 @@ public class PSeeRest extends JPanel {
 		
 		cmbDistincion = new JComboBox<String>();
 		cmbDistincion.setBounds(389, 83, 109, 27);
-		cmbDistincion.setModel(new DefaultComboBoxModel<String>(Rest.DISTIN));
+		cmbDistincion.setModel(new DefaultComboBoxModel<String>(DISTIN));
 		add(cmbDistincion);
 		
 		btnSee = new JButton(BTN_SEE);

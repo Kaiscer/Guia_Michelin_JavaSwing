@@ -27,12 +27,12 @@ public class WPrincipal extends JFrame {
 	
 	private JScrollPane scrollContainer;
 	private JMenuBar menuBar;
-	private JMenuItem jMItemSee;
-	private JMenuItem jMItemRegistroRest;
-	private JMenuItem jMItemModificar;
+	private JMenuItem mItemSee;
+	private JMenuItem mItemAddRest;
+	private JMenuItem mItemModify;
 	private JSeparator separator;
 	private JSeparator separator_1;
-	private JMenuItem jMItemSalir;
+	private JMenuItem mItemSalir;
 	
 	public WPrincipal() {
 		initComponents();
@@ -69,23 +69,23 @@ public class WPrincipal extends JFrame {
 		JMenu mnManageMenu = new JMenu("Manager Restaurant ");
 		menuBar.add(mnManageMenu);
 		
-		jMItemSee = new JMenuItem(ITEM_SEE);
-		mnManageMenu.add(jMItemSee);
+		mItemSee = new JMenuItem(ITEM_SEE);
+		mnManageMenu.add(mItemSee);
 		
 		separator = new JSeparator();
 		mnManageMenu.add(separator);
 		
-		jMItemRegistroRest = new JMenuItem(ITEM_ADD);
-		mnManageMenu.add(jMItemRegistroRest);
+		mItemAddRest = new JMenuItem(ITEM_ADD);
+		mnManageMenu.add(mItemAddRest);
 		
 		separator_1 = new JSeparator();
 		mnManageMenu.add(separator_1);
 		
-		jMItemModificar = new JMenuItem(ITEM_MODIFICACION);
-		mnManageMenu.add(jMItemModificar);
+		mItemModify = new JMenuItem(ITEM_MODIFICACION);
+		mnManageMenu.add(mItemModify);
 		
-		jMItemSalir = new JMenuItem(ITEM_EXIT);
-		menuBar.add(jMItemSalir);
+		mItemSalir = new JMenuItem(ITEM_EXIT);
+		menuBar.add(mItemSalir);
 	}
 	
 	public void hacerVisible() {
@@ -100,9 +100,11 @@ public class WPrincipal extends JFrame {
 	
 	public void setControl(RestControl control) {
 		
-		jMItemSee.addActionListener(control);
+		mItemSee.addActionListener(control);
+		mItemAddRest.addActionListener(control);
+		mItemModify.addActionListener(control);
 		
-		jMItemSalir.addActionListener(control);
+		mItemSalir.addActionListener(control);
 		
 	}
 	
