@@ -12,6 +12,7 @@ import db.RestPersistencia;
 import model.Rest;
 import view.WPrincipal;
 import view.PAddRest;
+import view.PModRest;
 import view.PSeeRest;
 
 public class RestControl implements ActionListener {
@@ -21,15 +22,17 @@ public class RestControl implements ActionListener {
 		PSeeRest pSee;
 		RestPersistencia rP;
 		PAddRest pAdd;
+		PModRest pMod;
 		
 		
 		
 
-	public RestControl(WPrincipal wP, PSeeRest pSee, RestPersistencia rP, PAddRest pAdd) {
+	public RestControl(WPrincipal wP, PSeeRest pSee, RestPersistencia rP, PAddRest pAdd, PModRest pMod) {
 			this.wP = wP;
 			this.pSee = pSee;
 			this.rP = rP;
 			this.pAdd = pAdd;
+			this.pMod = pMod;
 			listRest = new ArrayList<Rest>();
 		}
 
@@ -50,6 +53,9 @@ public class RestControl implements ActionListener {
 				wP.uploadPanel(pAdd);
 				
 				
+			}else if (e.getActionCommand().equals(WPrincipal.ITEM_MODIFICACION)) {
+				wP.uploadPanel(pMod);
+				
 			}else if (e.getActionCommand().equals(WPrincipal.ITEM_EXIT)) {
 				
 				int option = JOptionPane.showConfirmDialog(wP, "¿Estas seguro que deseas salir?", "Confirmar Salida", 
@@ -59,6 +65,11 @@ public class RestControl implements ActionListener {
 					System.exit(0);
 				}
 			}
+			
+			
+			
+			
+			
 		}else if (e.getSource() instanceof JButton){
 			if (e.getActionCommand().equals(PSeeRest.BTN_SEE)) {
 				if (pSee.getcmbRegion().getSelectedIndex() == 0 && pSee.getCmbDistincion().getSelectedIndex()== 0) {

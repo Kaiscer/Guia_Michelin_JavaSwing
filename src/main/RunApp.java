@@ -6,6 +6,7 @@ import control.RestControl;
 import db.RestPersistencia;
 import view.WPrincipal;
 import view.PAddRest;
+import view.PModRest;
 import view.PSeeRest;
 
 public class RunApp {
@@ -19,21 +20,25 @@ public class RunApp {
 				
 				WPrincipal wP = new WPrincipal();
 				
-				PSeeRest wS = new PSeeRest();
+				PSeeRest pS = new PSeeRest();
 				
 				RestPersistencia rP = new RestPersistencia();
 				
 				PAddRest pAdd = new PAddRest();
 				
-				RestControl control = new RestControl(wP, wS, rP, pAdd);
+				PModRest pMod = new PModRest();
+				
+				RestControl control = new RestControl(wP, pS, rP, pAdd, pMod);
 				
 				wP.hacerVisible();
 				
 				wP.setControl(control);
 				
-				wS.setControl(control);
+				pS.setControl(control);
 				
 				pAdd.setControl(control);
+				
+				pMod.setControl(control);
 				
 			}
 		});
