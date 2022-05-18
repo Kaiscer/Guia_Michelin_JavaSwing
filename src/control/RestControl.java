@@ -41,7 +41,7 @@ public class RestControl implements ActionListener {
 		if (e.getSource() instanceof JMenuItem) {
 			
 			if (e.getActionCommand().equals(WPrincipal.ITEM_SEE)) {
-//				System.out.println("Test");
+				pSee.fillCmbRegion(rP.requestRegiones());
 				wP.uploadPanel(pSee);
 				pSee.hacerVisible(false);
 		
@@ -62,15 +62,31 @@ public class RestControl implements ActionListener {
 		}else if (e.getSource() instanceof JButton){
 			if (e.getActionCommand().equals(PSeeRest.BTN_SEE)) {
 				if (pSee.getcmbRegion().getSelectedIndex() == 0 && pSee.getCmbDistincion().getSelectedIndex()== 0) {
-					//System.out.println("testButton");
+					
 					listRest = rP.seeRest();
 					pSee.fillTable(listRest);
 					pSee.hacerVisible(true);
-				}									
+					
+				} else if (pSee.getcmbRegion().getSelectedIndex() == 0) {
+						
+					listRest = rP.filterTable(pSee.getCmbDistincion().getSelectedIndex());
+					pSee.fillTable(listRest);
+					pSee.hacerVisible(true);
+					
+				} else if (pSee.getCmbDistincion().getSelectedIndex()== 0) {
+					
+				} else {
+					
+				}
 				
 			}else if (e.getActionCommand().equals(PAddRest.BTN_ADD)) {
 					
 					Rest rest = pAdd.getRestaurant();
+					
+					if (rest != null) {
+						String seeRestDb = rP.findRest(rest.getNombre());
+					}
+					
 			}else if (e.getActionCommand().equals(PAddRest.BTN_CLEAN)) {
 				pAdd.cleanForm();
 			}

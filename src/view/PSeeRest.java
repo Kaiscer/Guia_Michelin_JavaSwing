@@ -24,11 +24,10 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.Font;
 
 public class PSeeRest extends JPanel {
-	public static final String [] DISTIN = {"Todas", "1 Estrella", "2 Estrellas", "3 Estrellas"};
+	
+	public static final String [] DISTIN = {"TODAS", "1 Estrella", "2 Estrellas", "3 Estrellas"};
 
-	public static final String [] REGIONES = {"Todas", "Andalucía","Aragón","Asturias",	"Islas Baleares", "Cantabria",
-			"Islas Canarias", "Castilla - La Mancha", "Castilla y León", "Cataluña", "Galicia", "Extremadura", "Madrid", 
-			"Murcia", "Navarra", "País Vasco", "La Rioja", "Comunidad Valenciana"}; 
+	public static final String REGIONES = "TODAS"; 
 	 
 	public static final int ANCHO = 800;
 	public static final int ALTO = 650;
@@ -43,7 +42,9 @@ public class PSeeRest extends JPanel {
 	private JScrollPane scrollTable;
 	private JTable tableRest;
 	private DefaultTableModel tModel;
+	private DefaultComboBoxModel<String> cmbModel;
 	private JButton btnDelete;
+	
 	public PSeeRest() {
 		initComponents();
 	}
@@ -65,7 +66,9 @@ public class PSeeRest extends JPanel {
 		
 		cmbRegion = new JComboBox<String>();
 		cmbRegion.setBounds(74, 83, 178, 27);
-		cmbRegion.setModel(new DefaultComboBoxModel<String>(REGIONES));
+		cmbModel = new DefaultComboBoxModel<String>();
+		cmbRegion.setModel(cmbModel);
+		
 		add(cmbRegion);
 		
 		setSize(ANCHO,ALTO);
@@ -80,7 +83,7 @@ public class PSeeRest extends JPanel {
 		add(cmbDistincion);
 		
 		btnSee = new JButton(BTN_SEE);
-		btnSee.setBounds(536, 163, 117, 29);
+		btnSee.setBounds(402, 166, 117, 29);
 		add(btnSee);
 		
 		scrollTable = new JScrollPane();
@@ -90,14 +93,23 @@ public class PSeeRest extends JPanel {
 		
 		tableRest = new JTable();
 		configTable();
+		
 		scrollTable.setViewportView(tableRest);
 		
 		btnDelete = new JButton(BTN_DELETE);
-		btnDelete.setBounds(536, 532, 117, 29);
+		btnDelete.setBounds(531, 166, 117, 29);
 		add(btnDelete);
 		centerWs();
 		
 	}
+
+	public void fillCmbRegion(ArrayList<String> listRegiones) {
+		
+		cmbModel.removeAllElements();
+		cmbModel.addElement(REGIONES);
+		cmbModel.addAll(listRegiones);
+	}
+	
 	
 	public void hacerVisible(boolean b) {
 		
@@ -187,5 +199,9 @@ public class PSeeRest extends JPanel {
 		}
 		
 		
+		
+		
 	}
+	
+	
 }
