@@ -72,22 +72,34 @@ public class RestControl implements ActionListener {
 			
 		}else if (e.getSource() instanceof JButton){
 			if (e.getActionCommand().equals(PSeeRest.BTN_SEE)) {
-				if (pSee.getcmbRegion().getSelectedIndex() == 0 && pSee.getCmbDistincion().getSelectedIndex()== 0) {
+				if (pSee.getCmbRegion().getSelectedIndex() == 0 && pSee.getCmbDistincion().getSelectedIndex()== 0) {
 					
 					listRest = rP.seeRest();
-					pSee.fillTable(listRest);
-					pSee.hacerVisible(true);
 					
-				} else if (pSee.getcmbRegion().getSelectedIndex() == 0) {
+					
+				} else if (pSee.getCmbRegion().getSelectedIndex() == 0) {
 						
-					listRest = rP.filterTable(pSee.getCmbDistincion().getSelectedIndex());
-					pSee.fillTable(listRest);
-					pSee.hacerVisible(true);
+					listRest = rP.filterTable(pSee.getCmbDistincion().getSelectedIndex(), (String) pSee.getCmbRegion().getSelectedItem());
+					
 					
 				} else if (pSee.getCmbDistincion().getSelectedIndex()== 0) {
 					
-				} else {
+					listRest = rP.filterTable(pSee.getCmbDistincion().getSelectedIndex(), (String) pSee.getCmbRegion().getSelectedItem());
+				
 					
+				}else  {
+					
+					listRest = rP.filterTable(pSee.getCmbDistincion().getSelectedIndex(), (String)pSee.getCmbRegion().getSelectedItem());
+					
+					
+				}
+				
+				if (listRest.isEmpty()) {
+					pSee.setError("No se han encontrado datos para el filtro introducido");
+					pSee.hacerVisible(false);
+				} else {
+					pSee.fillTable(listRest);
+					pSee.hacerVisible(true);
 				}
 				
 			}else if (e.getActionCommand().equals(PAddRest.BTN_ADD)) {

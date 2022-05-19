@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 
 import model.Rest;
+import view.PSeeRest;
 
 public class RestPersistencia {
 	
@@ -134,8 +135,11 @@ public class RestPersistencia {
 			 
 				try {
 					if (rstl != null)rstl.close();
+					if (stml != null) stml.close();	
+					if (con != null) con.close();
+					
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				} {
 				
@@ -147,10 +151,25 @@ public class RestPersistencia {
 		return listRegiones;
 	}
 
-	public ArrayList<Rest> filterTable(int distin) {
+
+//	
+	public ArrayList<Rest> filterTable(int distin, String reg) {
 		ArrayList<Rest> listFilter = new ArrayList<Rest>();
 		 
-		String query = "SELECT * " + " FROM " + RestContract.NOMBRE_TABLA + " WHERE " + RestContract.COLUMN_DISTIN + " = ?";
+		// distin = 0 y reg = "TODAS"
+		String query = "SELECT * " + 
+						" FROM " + RestContract.NOMBRE_TABLA;
+		if (distin != 0 && reg.equals(PSeeRest.REGIONES)) {
+			query += " WHERE " + RestContract.COLUMN_DISTIN + " = ?" ;
+			
+		} else if (distin == 0 && !reg.equals(PSeeRest.REGIONES)) {
+			query += " WHERE " + RestContract.COLUMN_REGION + " = ?" ;
+			
+		} else if (distin != 0 && !reg.equals(PSeeRest.REGIONES)) {
+			query += " WHERE " + RestContract.COLUMN_DISTIN + " = ?" 
+					+ " and " + RestContract.COLUMN_REGION + " = ?" ;
+		}
+						
 		
 		Connection con = null;
 		PreparedStatement pstml = null;
@@ -161,8 +180,18 @@ public class RestPersistencia {
 			con = acceso.getConnection();
 			pstml = con.prepareStatement(query);
 			
-			pstml.setInt(1, distin);
+			if (distin != 0 && reg.equals(PSeeRest.REGIONES)) {
+				pstml.setInt(1, distin);
+				
+			} else if (distin == 0 && !reg.equals(PSeeRest.REGIONES)) {
+				pstml.setString(1, reg);
+				
+			} else if (distin != 0 && !reg.equals(PSeeRest.REGIONES)) {
+				pstml.setInt(1, distin);
+				pstml.setString(2, reg);
+			}
 			
+		
 			rstl = pstml.executeQuery();
 			
 			Rest rest;
@@ -222,6 +251,11 @@ public class RestPersistencia {
 		
 		return listFilter;
 	}
+
+//	public ArrayList<Rest> filterTableDis(int selectedIndex) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 	
 
 }

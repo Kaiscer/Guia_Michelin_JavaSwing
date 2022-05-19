@@ -221,7 +221,7 @@ public class PAddRest extends JPanel {
 		
 		
 	}
-	private void setError(String error) {
+	public void setError(String error) {
 		JOptionPane.showMessageDialog(this, error, "Error de datos",JOptionPane.ERROR_MESSAGE);
 		
 	}

@@ -7,6 +7,7 @@ import db.RestContract;
 import model.Rest;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -143,11 +144,7 @@ public class PSeeRest extends JPanel {
 		
 		
 	}
-	
-	
-	
-	
-	
+		
 	private void centerWs() {
 		
 		setPreferredSize(new Dimension(ANCHO, ALTO));  
@@ -163,7 +160,7 @@ public class PSeeRest extends JPanel {
 		btnSee.addActionListener(control);
 	}
 	
-	public JComboBox<String> getcmbRegion() {
+	public JComboBox<String> getCmbRegion() {
 		
 		return cmbRegion;
 	}
@@ -200,6 +197,10 @@ public class PSeeRest extends JPanel {
 		
 		
 		
+		
+	}
+	public void setError(String error) {
+		JOptionPane.showMessageDialog(this, error, "Resltado de Consulta", JOptionPane.ERROR_MESSAGE);
 		
 	}
 	
