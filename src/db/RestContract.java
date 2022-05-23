@@ -3,6 +3,7 @@ package db;
 public class RestContract {
 	
 	public static final String NOMBRE_TABLA = "RESTAURANTES";
+	public static final String COLUMN_ID = "ID";
     public static final String COLUMN_NOMBRE = "NOMBRE";
     public static final String COLUMN_REGION = "REGION";
     public static final String COLUMN_CIUDAD = "CIUDAD";

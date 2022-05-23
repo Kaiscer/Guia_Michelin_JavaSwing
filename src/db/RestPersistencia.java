@@ -18,7 +18,7 @@ public class RestPersistencia {
 		acceso = new AccesoDB();
 	}
 
-	public ArrayList<Rest> seeRest() {
+	public ArrayList<Rest> requestData() {
 		ArrayList<Rest> listRest = new ArrayList<Rest>();
 		
 		String query  = "SELECT * " +  " FROM " + RestContract.NOMBRE_TABLA;
@@ -37,7 +37,7 @@ public class RestPersistencia {
 			rslt = stml.executeQuery(query);
 			
 		Rest rest;
-	
+		int id;
 		String nombre;
 		String region;
 		String ciudad;
@@ -51,7 +51,7 @@ public class RestPersistencia {
 		
 		while (rslt.next()) {
 			
-			
+			id = rslt.getInt(1);
 			nombre = rslt.getString(2);
 			region = rslt.getString(3);
 			ciudad = rslt.getString(4);
@@ -63,7 +63,7 @@ public class RestPersistencia {
 			telefono = rslt.getString(10);
 			web = rslt.getString(11);
 			
-			rest = new Rest(nombre, region, ciudad, disti, direc, pMin, pMax, cocina, telefono, web);
+			rest = new Rest(id, nombre, region, ciudad, disti, direc, pMin, pMax, cocina, telefono, web);
 			
 			listRest.add(rest);
 		}
@@ -195,7 +195,7 @@ public class RestPersistencia {
 			rstl = pstml.executeQuery();
 			
 			Rest rest;
-			
+			int id;
 			String nombre;
 			String region;
 			String ciudad;
@@ -209,7 +209,7 @@ public class RestPersistencia {
 			
 			while (rstl.next()) {
 				
-				
+				id = rstl.getInt(1);
 				nombre = rstl.getString(2);
 				region = rstl.getString(3);
 				ciudad = rstl.getString(4);
@@ -221,7 +221,7 @@ public class RestPersistencia {
 				telefono = rstl.getString(10);
 				web = rstl.getString(11);
 				
-				rest = new Rest(nombre, region, ciudad, disti, direc, pMin, pMax, cocina, telefono, web);
+				rest = new Rest(id, nombre, region, ciudad, disti, direc, pMin, pMax, cocina, telefono, web);
 				
 				listFilter.add(rest);
 			}
@@ -252,10 +252,171 @@ public class RestPersistencia {
 		return listFilter;
 	}
 
-//	public ArrayList<Rest> filterTableDis(int selectedIndex) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	public int deleteRest(int id) {
+		int result = 0;
+		
+		String query = "DELETE FROM " + RestContract.NOMBRE_TABLA + 
+						" WHERE " + RestContract.COLUMN_ID + " = ?";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = acceso.getConnection();
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, id);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("El driver indicado no es correcto");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("Error en la base de datos: error conexión, sentencia incorrecta");
+			e.printStackTrace();
+		}finally {
+			
+				try {
+					if (pstmt != null)pstmt.close();
+					if (con != null)con.close();
+					
+				} catch (SQLException e) {
+					
+					e.printStackTrace();
+				} {
+				
+			}
+			
+		}
+		
+		
+		
+		return result;
+	}
+
+	public String searchName(String name) {
+		String newName = null;
+		
+		String query = "SELECT " + RestContract.COLUMN_NOMBRE + 
+						" FROM " + RestContract.NOMBRE_TABLA + 
+						" WHERE " + RestContract.COLUMN_NOMBRE + " = ?";
+//		System.out.println(query);
+//		System.out.println(name);
+//		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rstl = null ;
+		
+		try {
+			con = acceso.getConnection();
+			
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1, name);
+			
+			rstl = pstmt.executeQuery();
+			
+			if (rstl.next()) {
+				
+				newName = rstl.getString(1);
+				
+			}
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("El driver indicado no es correcto");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("Error en la base de datos: error conexión, sentencia incorrecta");
+			e.printStackTrace();
+		}finally {
+			
+			
+				try {
+					if (rstl != null)rstl.close();
+					if (pstmt != null)pstmt.close();
+					if (con != null)con.close();
+					
+				} catch (SQLException e) {
+					
+					e.printStackTrace();
+				} {
+				
+			}
+		}
+		
+		
+		
+		
+		
+		return newName;
+	}
+
+	public int addNewRest(Rest rest) {
+		int result = 0;
+		
+		String query = "INSERT INTO " + RestContract.NOMBRE_TABLA + " (" + RestContract.COLUMN_NOMBRE + ", " 
+									+ RestContract.COLUMN_REGION + ", " + RestContract.COLUMN_CIUDAD + ", " 
+									+ RestContract.COLUMN_DISTIN + ", " + RestContract.COLUMN_DIREC + ", " 
+									+ RestContract.COLUMN_PREC_MIN + ", " + RestContract.COLUMN_PREC_MAX + ", " 
+									+ RestContract.COLUMN_COCINA + ", " + RestContract.COLUMN_TELEF + ", " + RestContract.COLUMN_WEB 
+									+ ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = acceso.getConnection();
+			pstmt = con.prepareStatement(query);
+			
+			
+			pstmt.setString(1, rest.getNombre());
+			pstmt.setString(2, rest.getRegion());
+			pstmt.setString(3, rest.getCiudad());
+			pstmt.setInt(4, rest.getDistincion());
+			pstmt.setString(5, rest.getDireccion());
+			pstmt.setDouble(6, rest.getPrecio_Min());
+			pstmt.setDouble(7, rest.getPrecio_Max());
+			pstmt.setString(8, rest.getCocina());
+			pstmt.setString(9, rest.getTelefono());
+			pstmt.setString(10, rest.getWeb());
+			
+			result = pstmt.executeUpdate();
+			
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("El driver indicado no es correcto");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			
+			System.out.println("Error en la base de datos: error conexión, sentencia incorrecta");
+			
+			e.printStackTrace();
+		}finally {
+			
+			
+				try {
+					if (pstmt != null)pstmt.close();
+					if (con != null)con.close();
+					
+				} catch (SQLException e) {
+					
+					e.printStackTrace();
+				}
+			
+			
+		}
+		
+		
+		
+		
+		
+		return result;
+	}
+
+	
+
+	
+
 	
 
 }

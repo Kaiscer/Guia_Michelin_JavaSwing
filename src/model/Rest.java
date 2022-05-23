@@ -6,7 +6,7 @@ public class Rest {
 	
 	
 	
-	//private int id;
+	private int id;
 	private String nombre;	
 	private String region;
 	private String ciudad;
@@ -18,9 +18,9 @@ public class Rest {
 	private String telefono;
 	private String web;
 	
-	public Rest( String nombre, String region, String ciudad, int distincion, String direccion, double precio_Min,
+	public Rest(int id, String nombre, String region, String ciudad, int distincion, String direccion, double precio_Min,
 			double precio_Max, String cocina, String telefono, String web) {
-
+		this.id = id;
 		this.nombre = nombre;
 		this.region = region;
 		this.ciudad = ciudad;
@@ -32,6 +32,14 @@ public class Rest {
 		this.telefono = telefono;
 		this.web = web;
 	}
+	
+	
+
+	public int getId() {
+		return id;
+	}
+
+
 
 	public String getNombre() {
 		return nombre;

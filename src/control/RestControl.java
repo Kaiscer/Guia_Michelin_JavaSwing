@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import db.RestPersistencia;
 import model.Rest;
@@ -34,6 +35,9 @@ public class RestControl implements ActionListener {
 			this.pAdd = pAdd;
 			this.pMod = pMod;
 			listRest = new ArrayList<Rest>();
+			
+			
+			
 		}
 
 
@@ -72,44 +76,17 @@ public class RestControl implements ActionListener {
 			
 		}else if (e.getSource() instanceof JButton){
 			if (e.getActionCommand().equals(PSeeRest.BTN_SEE)) {
-				if (pSee.getCmbRegion().getSelectedIndex() == 0 && pSee.getCmbDistincion().getSelectedIndex()== 0) {
-					
-					listRest = rP.seeRest();
-					
-					
-				} else if (pSee.getCmbRegion().getSelectedIndex() == 0) {
-						
-					listRest = rP.filterTable(pSee.getCmbDistincion().getSelectedIndex(), (String) pSee.getCmbRegion().getSelectedItem());
-					
-					
-				} else if (pSee.getCmbDistincion().getSelectedIndex()== 0) {
-					
-					listRest = rP.filterTable(pSee.getCmbDistincion().getSelectedIndex(), (String) pSee.getCmbRegion().getSelectedItem());
+				SeeRest();
 				
-					
-				}else  {
-					
-					listRest = rP.filterTable(pSee.getCmbDistincion().getSelectedIndex(), (String)pSee.getCmbRegion().getSelectedItem());
-					
-					
-				}
+			}else if (e.getActionCommand().equals(PSeeRest.BTN_DELETE)) {
 				
-				if (listRest.isEmpty()) {
-					pSee.setError("No se han encontrado datos para el filtro introducido");
-					pSee.hacerVisible(false);
-				} else {
-					pSee.fillTable(listRest);
-					pSee.hacerVisible(true);
-				}
-				
+				deleteRest();
+
+					
 			}else if (e.getActionCommand().equals(PAddRest.BTN_ADD)) {
-					
-					Rest rest = pAdd.getRestaurant();
-					
-					if (rest != null) {
-						String seeRestDb = rP.findRest(rest.getNombre());
-					}
-					
+				
+				addRest();
+			
 			}else if (e.getActionCommand().equals(PAddRest.BTN_CLEAN)) {
 				pAdd.cleanForm();
 			}
@@ -118,6 +95,105 @@ public class RestControl implements ActionListener {
 		
 		
 
+	}
+
+
+
+
+	private void addRest() {
+		Rest rest = pAdd.newDataRest();
+		
+		if (rest != null) {
+			
+			String seeNameDb = rP.searchName(rest.getNombre());
+			
+			if (seeNameDb != null) {
+				pAdd.setError("El restaurante ya se encutra registrado en la base de datos");
+			}else {
+				int newRest = rP.addNewRest(rest);
+				
+				
+				if (newRest > 0) {
+					pAdd.setMsg("Restaurante añadido con exito");
+					pAdd.cleanForm();
+				}else {
+					pAdd.setError("No se ha podido resgistrar el nuevo Restaurante");
+				}
+			}
+			
+			
+		}
+		
+	}
+
+
+
+
+	private void SeeRest() {
+		if (pSee.getCmbRegion().getSelectedIndex() == 0 && pSee.getCmbDistincion().getSelectedIndex()== 0) {
+			
+			listRest = rP.requestData();
+			
+			
+		} else if (pSee.getCmbRegion().getSelectedIndex() == 0) {
+				
+			listRest = rP.filterTable(pSee.getCmbDistincion().getSelectedIndex(), (String) pSee.getCmbRegion().getSelectedItem());
+			
+			
+		} else if (pSee.getCmbDistincion().getSelectedIndex()== 0) {
+			
+			listRest = rP.filterTable(pSee.getCmbDistincion().getSelectedIndex(), (String) pSee.getCmbRegion().getSelectedItem());
+		
+			
+		}else  {
+			
+			listRest = rP.filterTable(pSee.getCmbDistincion().getSelectedIndex(), (String)pSee.getCmbRegion().getSelectedItem());
+			
+			
+		}
+		
+		if (listRest.isEmpty()) {
+			pSee.setError("No se han encontrado datos para el filtro introducido");
+			pSee.hacerVisible(false);
+		} else {
+			pSee.fillTable(listRest);
+			pSee.hacerVisible(true);
+		}
+	}
+
+
+
+
+	private void deleteRest() {
+		Rest rest = pSee.restSelect();
+		
+		if (rest == null) {
+			pSee.setError("Debe seleccionar el registro a eliminar");
+			
+		}else {
+			
+			int answer = JOptionPane.showConfirmDialog(pSee, "Se va a elimiar el registro seleccionado¿deseas continuar?","Confirmación",
+					JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
+				if (answer == JOptionPane.YES_OPTION ) {
+					
+					
+				
+					int result = rP.deleteRest(rest.getId());
+						listRest = rP.requestData();
+						pSee.fillTable(listRest);
+					
+						if (result > 0) {
+							JOptionPane.showMessageDialog(pSee, "Restaurante eliminado con exito");
+						}else {
+							System.out.println("Error en la Query");
+						}
+					
+				}else {
+					listRest = rP.requestData();
+				}
+		}
+		
+		
 	}
 
 }

@@ -166,14 +166,14 @@ public class PAddRest extends JPanel {
 		
 		
 	}
-	public Rest getRestaurant() {
+	public Rest newDataRest() {
 		Rest rest = null;
 		
-		
+		int id = 0;
 		String nombre  = txtNombre.getText().trim();
 				
 		if (nombre.isBlank()) {
-			setError("Debes introducir el nombre");
+			setError("Debes introducir el nombre del restaurante");
 			return rest;
 		}
 		
@@ -183,7 +183,7 @@ public class PAddRest extends JPanel {
 		String ciudad = txtCiudad.getText().trim();
 		
 		if (ciudad.isBlank()) {
-			setError("Debe introducir la ciudad");
+			setError("Debes introducir la ciudad");
 			return rest;
 		}
 		
@@ -207,7 +207,7 @@ public class PAddRest extends JPanel {
 					String tlnf = txtTlfno.getText();
 					String web = txtWeb.getText();
 					
-					rest = new Rest(nombre, region, ciudad, disti, direc, pMin, pMax, cocina, tlnf, web);
+					rest = new Rest(id,nombre, region, ciudad, disti, direc, pMin, pMax, cocina, tlnf, web);
 				}
 			}
 			
@@ -240,4 +240,8 @@ public class PAddRest extends JPanel {
 	
 		
 	}
+	public void setMsg(String msg) {
+		JOptionPane.showMessageDialog(this, msg, "Mesensaje de Confirmacion", JOptionPane.OK_OPTION);
+	}
+	
 }

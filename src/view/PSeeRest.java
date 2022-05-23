@@ -45,6 +45,7 @@ public class PSeeRest extends JPanel {
 	private DefaultTableModel tModel;
 	private DefaultComboBoxModel<String> cmbModel;
 	private JButton btnDelete;
+	private ArrayList<Rest> datosTabla;
 	
 	public PSeeRest() {
 		initComponents();
@@ -158,6 +159,7 @@ public class PSeeRest extends JPanel {
 	
 	public void setControl(RestControl control) {
 		btnSee.addActionListener(control);
+		btnDelete.addActionListener(control);
 	}
 	
 	public JComboBox<String> getCmbRegion() {
@@ -173,6 +175,7 @@ public class PSeeRest extends JPanel {
 	
 	public void fillTable(ArrayList<Rest> listRest) {
 		
+		datosTabla = listRest;
 		tModel.getDataVector().clear();
 		
 		Object[]row = new Object [5];
@@ -200,8 +203,24 @@ public class PSeeRest extends JPanel {
 		
 	}
 	public void setError(String error) {
-		JOptionPane.showMessageDialog(this, error, "Resltado de Consulta", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, error, "Resultado de Consulta", JOptionPane.ERROR_MESSAGE);
 		
+	}
+	
+	public Rest restSelect() {
+		Rest restSel = null;
+		int pos = tableRest.getSelectedRow();
+		
+		if (pos >= 0) {
+			
+			restSel = datosTabla.get(pos);
+			
+		}else {
+			
+			restSel = null;
+		}
+		
+		return restSel ;
 	}
 	
 	

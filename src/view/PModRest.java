@@ -178,7 +178,7 @@ public class PModRest extends JPanel {
 	public Rest getRestaurant() {
 		Rest rest = null;
 		
-		
+		int id = 0;
 		String nombre  = txtNombre.getText().trim();
 				
 		if (nombre.isBlank()) {
@@ -216,7 +216,7 @@ public class PModRest extends JPanel {
 					String tlnf = txtTlfno.getText();
 					String web = txtWeb.getText();
 					
-					rest = new Rest(nombre, region, ciudad, disti, direc, pMin, pMax, cocina, tlnf, web);
+					rest = new Rest(id,nombre, region, ciudad, disti, direc, pMin, pMax, cocina, tlnf, web);
 				}
 			}
 			
