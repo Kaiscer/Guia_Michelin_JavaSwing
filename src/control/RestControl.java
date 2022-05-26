@@ -48,17 +48,20 @@ public class RestControl implements ActionListener {
 		if (e.getSource() instanceof JMenuItem) {
 			
 			if (e.getActionCommand().equals(WPrincipal.ITEM_SEE)) {
-				pSee.fillCmbRegion(rP.requestRegiones());
+				pSee.fillCmbRegion(rP.fillRegiones());
 				wP.uploadPanel(pSee);
 				pSee.hacerVisible(false);
 		
 				
 			}else if (e.getActionCommand().equals(WPrincipal.ITEM_ADD)) {
 				wP.uploadPanel(pAdd);
+				pAdd.cleanForm();
 				
 				
 			}else if (e.getActionCommand().equals(WPrincipal.ITEM_MODIFICACION)) {
+				pMod.enableComponents(false);
 				wP.uploadPanel(pMod);
+				pMod.cleanForm();
 				
 			}else if (e.getActionCommand().equals(WPrincipal.ITEM_EXIT)) {
 				
@@ -89,6 +92,16 @@ public class RestControl implements ActionListener {
 			
 			}else if (e.getActionCommand().equals(PAddRest.BTN_CLEAN)) {
 				pAdd.cleanForm();
+				
+			}else if (e.getActionCommand().equals(PModRest.BTN_SEARCH)) {
+				searchModRes();
+				
+			}else if (e.getActionCommand().equals(PModRest.BTN_SAVE_MOD)) {
+				updateData();
+				
+			}else if (e.getActionCommand().equals(PModRest.BTN_CANCEL_MOD)) {
+				pMod.cleanForm();
+				pMod.enableComponents(false);
 			}
 			
 		}
@@ -96,6 +109,57 @@ public class RestControl implements ActionListener {
 		
 
 	}
+
+
+
+
+	private void updateData() {
+		
+		Rest restMod = pMod.exceptionTxt();
+		
+		if (restMod != null) {
+			
+			int result = rP.updateRes(restMod);
+			
+			if (result > 0) {
+				
+				pMod.setMsg("Los datos se actualizaron correctamente");
+				pMod.cleanForm();
+				
+			}else {
+				pMod.setError("Error!!! No fue posible actualizar los datos");
+			}
+		}
+		
+	}
+
+	private void searchModRes() {
+		String name = pMod.txtNombreMod.getText().trim();
+		
+		
+		if (!name.isBlank()) {			
+
+			
+			Rest rest = rP.getRest(name);
+			
+			if (rest != null) {
+								
+				pMod.fillRestMod(rest);
+				pMod.enableComponents(true);
+				
+				
+				
+			}else {
+				pMod.setError("El restaurante (" + pMod.txtNombreMod.getText() +  ") no se encuentra registrado");
+			}
+			
+			
+		}else {
+			
+			pMod.setError("Debes introducir el nombre del restaurante");
+		}
+	}
+	
 
 
 
@@ -125,9 +189,6 @@ public class RestControl implements ActionListener {
 		}
 		
 	}
-
-
-
 
 	private void SeeRest() {
 		if (pSee.getCmbRegion().getSelectedIndex() == 0 && pSee.getCmbDistincion().getSelectedIndex()== 0) {
@@ -160,10 +221,6 @@ public class RestControl implements ActionListener {
 			pSee.hacerVisible(true);
 		}
 	}
-
-
-
-
 	private void deleteRest() {
 		Rest rest = pSee.restSelect();
 		

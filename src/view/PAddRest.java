@@ -20,13 +20,8 @@ import java.awt.event.ActionEvent;
 
 public class PAddRest extends JPanel {
 	
-	public static final String [] REGIONES_ADD = {" - ","Andalucía","Aragón","Asturias",	"Islas Baleares", "Cantabria",
-			"Islas Canarias", "Castilla - La Mancha", "Castilla y León", "Cataluña", "Galicia", "Extremadura", "Madrid", 
-			"Murcia", "Navarra", "País Vasco", "La Rioja", "Comunidad Valenciana"};
 	
-	public static final String [] COCINA = {" - ","Creativa", "Moderna", "Tradicional", "Regional", "Fusión"};
-	
-	public static final String BTN_ADD = "Guardar datos";
+	public static final String BTN_ADD = "Añadir Rest";
 	public static final String BTN_CLEAN = "Limpiar datos";
 	
 	public static final int ANCHO = 750;
@@ -72,7 +67,7 @@ public class PAddRest extends JPanel {
 		
 		cmbCocina = new JComboBox<String>();
 		cmbCocina.setBounds(495, 86, 123, 27);
-		cmbCocina.setModel(new DefaultComboBoxModel<String>(COCINA));
+		cmbCocina.setModel(new DefaultComboBoxModel<String>(Rest.COCINA));
 		add(cmbCocina);
 		
 		JLabel lblRegion = new JLabel("Región:");
@@ -81,7 +76,7 @@ public class PAddRest extends JPanel {
 		
 		cmbRegion = new JComboBox<String>();
 		cmbRegion.setBounds(166, 141, 179, 27);
-		cmbRegion.setModel(new DefaultComboBoxModel<String>(REGIONES_ADD));
+		cmbRegion.setModel(new DefaultComboBoxModel<String>(Rest.REGIONES));
 		add(cmbRegion);
 		
 		JLabel lblCiudad = new JLabel("Ciudad:");
@@ -173,7 +168,7 @@ public class PAddRest extends JPanel {
 		String nombre  = txtNombre.getText().trim();
 				
 		if (nombre.isBlank()) {
-			setError("Debes introducir el nombre del restaurante");
+			setError("Debes introducir el nombre");
 			return rest;
 		}
 		
@@ -228,8 +223,8 @@ public class PAddRest extends JPanel {
 	public void cleanForm() {
 		
 		txtNombre.setText("");
-		cmbCocina.setSelectedItem(COCINA[0]);
-		cmbRegion.setSelectedItem(REGIONES_ADD[0]);
+		cmbCocina.setSelectedItem(Rest.COCINA[0]);
+		cmbRegion.setSelectedItem(Rest.REGIONES[0]);
 		txtCiudad.setText("");
 		txtDirección.setText("");
 		spnDistin.setValue(1);
@@ -241,7 +236,7 @@ public class PAddRest extends JPanel {
 		
 	}
 	public void setMsg(String msg) {
-		JOptionPane.showMessageDialog(this, msg, "Mesensaje de Confirmacion", JOptionPane.OK_OPTION);
+		JOptionPane.showMessageDialog(this, msg, "Mesensaje de Confirmacion", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 }

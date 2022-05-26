@@ -17,25 +17,20 @@ import javax.swing.DefaultComboBoxModel;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class PModRest extends JPanel {
-	
-	public static final String [] REGIONES_ADD = {" - ","Andalucía","Aragón","Asturias",	"Islas Baleares", "Cantabria",
-			"Islas Canarias", "Castilla - La Mancha", "Castilla y León", "Cataluña", "Galicia", "Extremadura", "Madrid", 
-			"Murcia", "Navarra", "País Vasco", "La Rioja", "Comunidad Valenciana"};
-	
-	public static final String [] COCINA = {" - ","Creativa", "Moderna", "Tradicional", "Regional", "Fusión"};
-	
-	public static final String BTN_SAVE = "Guardar datos";
-	public static final String BTN_CANCEL = "Cancelar";
+			
+	public static final String BTN_SAVE_MOD = "Guardar datos";
+	public static final String BTN_CANCEL_MOD = "Cancelar";
 	public static final String BTN_SEARCH = "Buscar";
 	
 	public static final int ANCHO = 750;
 	public static final int ALTO = 550;
 
 	
-	private JTextField txtNombre;
+	public JTextField txtNombreMod;
 	private JComboBox<String> cmbRegion;
 	private JComboBox<String> cmbCocina;
 	private JTextField txtCiudad;
@@ -47,6 +42,7 @@ public class PModRest extends JPanel {
 	private JTextField txtWeb;
 	private JButton btnSave;
 	
+	private int id;
 	private JButton btnCancel;
 	private JButton btnSearch;
 	public PModRest() {
@@ -64,10 +60,10 @@ public class PModRest extends JPanel {
 		lblNameRest.setBounds(105, 86, 63, 25);
 		add(lblNameRest);
 		
-		txtNombre = new JTextField();
-		txtNombre.setBounds(166, 85, 228, 26);
-		add(txtNombre);
-		txtNombre.setColumns(10);
+		txtNombreMod = new JTextField();
+		txtNombreMod.setBounds(166, 85, 228, 26);
+		add(txtNombreMod);
+		txtNombreMod.setColumns(10);
 		
 		JLabel lblConica = new JLabel("Cocina:");
 		lblConica.setBounds(434, 210, 61, 16);
@@ -77,7 +73,7 @@ public class PModRest extends JPanel {
 		
 		cmbCocina = new JComboBox<String>();
 		cmbCocina.setBounds(480, 206, 136, 27);
-		cmbCocina.setModel(new DefaultComboBoxModel<String>(COCINA));
+		cmbCocina.setModel(new DefaultComboBoxModel<String>(Rest.COCINA));
 		add(cmbCocina);
 		
 		JLabel lblRegion = new JLabel("Región:");
@@ -86,7 +82,7 @@ public class PModRest extends JPanel {
 		
 		cmbRegion = new JComboBox<String>();
 		cmbRegion.setBounds(166, 141, 179, 27);
-		cmbRegion.setModel(new DefaultComboBoxModel<String>(REGIONES_ADD));
+		cmbRegion.setModel(new DefaultComboBoxModel<String>(Rest.REGIONES));
 		add(cmbRegion);
 		
 		JLabel lblCiudad = new JLabel("Ciudad:");
@@ -153,11 +149,11 @@ public class PModRest extends JPanel {
 		add(txtWeb);
 		txtWeb.setColumns(10);
 		
-		btnSave = new JButton(BTN_SAVE);
+		btnSave = new JButton(BTN_SAVE_MOD);
 		btnSave.setBounds(214, 430, 117, 29);
 		add(btnSave);
 		
-		btnCancel = new JButton(BTN_CANCEL);
+		btnCancel = new JButton(BTN_CANCEL_MOD);
 		btnCancel.setBounds(422, 430, 117, 29);
 		add(btnCancel);
 		
@@ -168,8 +164,10 @@ public class PModRest extends JPanel {
 		add(btnSearch);
 		
 	}
+	
+	
 	public void setControl(RestControl control) {
-		
+		btnSearch.addActionListener(control);
 		btnSave.addActionListener(control);
 		btnCancel.addActionListener(control);
 		
@@ -179,7 +177,8 @@ public class PModRest extends JPanel {
 		Rest rest = null;
 		
 		int id = 0;
-		String nombre  = txtNombre.getText().trim();
+		
+		String nombre  = txtNombreMod.getText().trim();
 				
 		if (nombre.isBlank()) {
 			setError("Debes introducir el nombre");
@@ -230,15 +229,16 @@ public class PModRest extends JPanel {
 		
 		
 	}
-	private void setError(String error) {
+	public void setError(String error) {
 		JOptionPane.showMessageDialog(this, error, "Error de datos",JOptionPane.ERROR_MESSAGE);
 		
 	}
 	public void cleanForm() {
 		
-		txtNombre.setText("");
-		cmbCocina.setSelectedItem(COCINA[0]);
-		cmbRegion.setSelectedItem(REGIONES_ADD[0]);
+		id = 0;
+		txtNombreMod.setText("");
+		cmbCocina.setSelectedItem(Rest.COCINA[0]);
+		cmbRegion.setSelectedItem(Rest.REGIONES[0]);
 		txtCiudad.setText("");
 		txtDirección.setText("");
 		spnDistin.setValue(1);
@@ -249,4 +249,93 @@ public class PModRest extends JPanel {
 	
 		
 	}
+	public void enableComponents(boolean b) {
+		
+		cmbRegion.setEnabled(b);
+		txtCiudad.setEnabled(b);
+		txtDirección.setEnabled(b);
+		cmbCocina.setEnabled(b);
+		spnDistin.setEnabled(b);
+		txtPrecioMin.setEnabled(b);
+		txtPrecioMax.setEnabled(b);
+		txtTlfno.setEnabled(b);
+		txtWeb.setEnabled(b);
+		txtNombreMod.setEnabled(!b);
+		btnSearch.setEnabled(!b);
+		
+		
+	}
+	
+		
+		
+		
+		
+
+	public void fillRestMod(Rest rest) {
+		id = rest.getId();
+		txtNombreMod.setText(rest.getNombre());
+		cmbRegion.setSelectedItem(rest.getRegion());
+		txtCiudad.setText(rest.getCiudad());
+		cmbCocina.setSelectedItem(rest.getCocina());
+		txtDirección.setText(rest.getDireccion());
+		spnDistin.setValue(rest.getDistincion());
+		txtTlfno.setText(rest.getTelefono());
+		txtWeb.setText(rest.getWeb());
+		String pMin = String.valueOf(rest.getPrecio_Min());
+		String pMax = String.valueOf(rest.getPrecio_Max());
+		txtPrecioMin.setText(pMin);
+		txtPrecioMax.setText(pMax);				
+		
+	}
+	
+	public Rest exceptionTxt() {
+		
+		Rest dataRest = null;
+		
+		String nombre = txtNombreMod.getText();
+		
+		String ciudad = txtCiudad.getText().trim();
+		
+		if (ciudad.isBlank()) {
+			setError("Debes introducir una Ciudad");
+			return dataRest;
+		}
+		
+		String cocina = (String)cmbCocina.getSelectedItem();
+		String region = (String)cmbRegion.getSelectedItem();
+		String direc = txtDirección.getText();
+		
+		int disti = (int)spnDistin.getValue();
+			
+		try {
+			
+			double pMin = Double.parseDouble(txtPrecioMin.getText());
+			double pMax = Double.parseDouble(txtPrecioMax.getText());
+			
+			if (pMin == 0 || pMax == 0) {
+				throw new NumberFormatException();
+			}else {
+				if (pMin >= pMax) {
+					setError("El precio mínimo no puede ser superior al máximo");
+				
+				}else {
+					
+					String tlnf = txtTlfno.getText();
+					String web = txtWeb.getText();
+					
+					
+					dataRest = new Rest(id,nombre, region, ciudad, disti, direc, pMin, pMax, cocina, tlnf, web);
+				}
+			}
+			
+		}catch (NumberFormatException e) {
+			setError("El precio mínimo como máximo deben ser distintos a 0 y valores numéricos");
+		}
+		
+		return dataRest;
+	}
+	public void setMsg(String msg) {
+		JOptionPane.showMessageDialog(this, msg, "Resultado de Operación",JOptionPane.INFORMATION_MESSAGE);
+		
+	}	
 }

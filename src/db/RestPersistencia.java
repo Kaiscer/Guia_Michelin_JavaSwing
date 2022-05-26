@@ -36,7 +36,7 @@ public class RestPersistencia {
 			
 			rslt = stml.executeQuery(query);
 			
-		Rest rest;
+
 		int id;
 		String nombre;
 		String region;
@@ -63,7 +63,7 @@ public class RestPersistencia {
 			telefono = rslt.getString(10);
 			web = rslt.getString(11);
 			
-			rest = new Rest(id, nombre, region, ciudad, disti, direc, pMin, pMax, cocina, telefono, web);
+			Rest rest = new Rest(id, nombre, region, ciudad, disti, direc, pMin, pMax, cocina, telefono, web);
 			
 			listRest.add(rest);
 		}
@@ -91,15 +91,12 @@ public class RestPersistencia {
 		return listRest;
 	}
 
-	public String findRest(String nombre) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ArrayList<String> requestRegiones() {
+	
+	public ArrayList<String> fillRegiones() {
 		ArrayList<String> listRegiones = new ArrayList<String>();
 		
-		String query = "SELECT DISTINCT " + RestContract.COLUMN_REGION + " FROM " + RestContract.NOMBRE_TABLA;
+		String query = "SELECT DISTINCT " + RestContract.COLUMN_REGION + // Con el Select Distin nos aseguramos de no cargar datos por duplicados 
+						" FROM " + RestContract.NOMBRE_TABLA;
 		
 		Connection con = null;
 		Statement stml = null;
@@ -118,7 +115,7 @@ public class RestPersistencia {
 			
 			while (rstl.next()) {
 				
-				regiones = rstl.getString(RestContract.COLUMN_REGION);
+				regiones = rstl.getString(1);
 				
 				listRegiones.add(regiones);
 			
@@ -159,13 +156,13 @@ public class RestPersistencia {
 		// distin = 0 y reg = "TODAS"
 		String query = "SELECT * " + 
 						" FROM " + RestContract.NOMBRE_TABLA;
-		if (distin != 0 && reg.equals(PSeeRest.REGIONES)) {
+		if (distin != 0 && reg.equals(PSeeRest.TXTREG)) {
 			query += " WHERE " + RestContract.COLUMN_DISTIN + " = ?" ;
 			
-		} else if (distin == 0 && !reg.equals(PSeeRest.REGIONES)) {
+		} else if (distin == 0 && !reg.equals(PSeeRest.TXTREG)) {
 			query += " WHERE " + RestContract.COLUMN_REGION + " = ?" ;
 			
-		} else if (distin != 0 && !reg.equals(PSeeRest.REGIONES)) {
+		} else if (distin != 0 && !reg.equals(PSeeRest.TXTREG)) {
 			query += " WHERE " + RestContract.COLUMN_DISTIN + " = ?" 
 					+ " and " + RestContract.COLUMN_REGION + " = ?" ;
 		}
@@ -180,13 +177,13 @@ public class RestPersistencia {
 			con = acceso.getConnection();
 			pstml = con.prepareStatement(query);
 			
-			if (distin != 0 && reg.equals(PSeeRest.REGIONES)) {
+			if (distin != 0 && reg.equals(PSeeRest.TXTREG)) {
 				pstml.setInt(1, distin);
 				
-			} else if (distin == 0 && !reg.equals(PSeeRest.REGIONES)) {
+			} else if (distin == 0 && !reg.equals(PSeeRest.TXTREG)) {
 				pstml.setString(1, reg);
 				
-			} else if (distin != 0 && !reg.equals(PSeeRest.REGIONES)) {
+			} else if (distin != 0 && !reg.equals(PSeeRest.TXTREG)) {
 				pstml.setInt(1, distin);
 				pstml.setString(2, reg);
 			}
@@ -194,7 +191,7 @@ public class RestPersistencia {
 		
 			rstl = pstml.executeQuery();
 			
-			Rest rest;
+		 
 			int id;
 			String nombre;
 			String region;
@@ -221,7 +218,7 @@ public class RestPersistencia {
 				telefono = rstl.getString(10);
 				web = rstl.getString(11);
 				
-				rest = new Rest(id, nombre, region, ciudad, disti, direc, pMin, pMax, cocina, telefono, web);
+				Rest rest = new Rest(id, nombre, region, ciudad, disti, direc, pMin, pMax, cocina, telefono, web);
 				
 				listFilter.add(rest);
 			}
@@ -406,17 +403,152 @@ public class RestPersistencia {
 			
 		}
 		
+		return result;
+	}
+
+	public Rest getRest(String restName) {
+		Rest rest = null;
 		
+		
+		String query = "SELECT * FROM " + RestContract.NOMBRE_TABLA + 
+						" WHERE UPPER(" + RestContract.COLUMN_NOMBRE + ") LIKE ?";
+		
+		Connection con = null ;
+		PreparedStatement pstmt = null;
+		ResultSet rstl = null;
+		
+		try {
+			con = acceso.getConnection();
+			
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(1,"%" + restName.toUpperCase() + "%");
+			
+			rstl = pstmt.executeQuery();
+			
+			int id;
+			String nombre;
+			String region;
+			String ciudad;
+			int disti;
+			String direc;
+			String cocina;
+			double pMax;
+			double pMin;
+			String telefono;
+			String web;
+			
+			if (rstl.next()) {
+				id = rstl.getInt(1);
+				nombre = rstl.getString(2);
+				region = rstl.getString(3);
+				ciudad = rstl.getString(4);
+				disti = rstl.getInt(5);
+				direc = rstl.getString(6);				
+				pMin = rstl.getDouble(7);
+				pMax = rstl.getDouble(8);
+				cocina = rstl.getString(9);
+				telefono = rstl.getString(10);
+				web = rstl.getString(11);
+				
+				 rest = new Rest(id, nombre, region, ciudad, disti, direc, pMin, pMax, cocina, telefono, web);
+				
+				
+			}
+			
+			
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("El driver indicado no es correcto");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("Error en la base de datos: sentencia incorrecta");
+			e.printStackTrace();
+		}finally {
+			
+				try {
+					if (rstl != null)rstl.close();
+					if (pstmt != null)pstmt.close(); 
+					if (con != null)con.close(); 
+				
+				} catch (SQLException e) {
+					
+					e.printStackTrace();
+				} {
+				
+			}
+		}
+		
+		
+		
+		
+		
+		return rest;
+	}
+
+	public int updateRes(Rest restMod) {
+		int result = 0;
+		
+		
+		String query = "UPDATE " + RestContract.NOMBRE_TABLA + " SET " 
+						+ RestContract.COLUMN_REGION + " = ?, "
+						+ RestContract.COLUMN_CIUDAD + " = ?, "
+						+ RestContract.COLUMN_DISTIN + " = ?, "
+						+ RestContract.COLUMN_DIREC + " = ?, "
+						+ RestContract.COLUMN_PREC_MIN + " = ?, "
+						+ RestContract.COLUMN_PREC_MAX + " = ?, "
+						+ RestContract.COLUMN_COCINA + " = ?, "
+						+ RestContract.COLUMN_TELEF + " = ?, "
+						+ RestContract.COLUMN_WEB + " = ? "
+						+ " WHERE " + RestContract.COLUMN_ID + " = ?";
+		
+		
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			
+			
+			try {
+				con = acceso.getConnection();
+				
+				pstmt = con.prepareStatement(query);
+				
+				pstmt.setString(1, restMod.getRegion());
+				pstmt.setString(2, restMod.getCiudad());
+				pstmt.setInt(3, restMod.getDistincion());
+				pstmt.setString(4, restMod.getDireccion());
+				pstmt.setDouble(5, restMod.getPrecio_Min());
+				pstmt.setDouble(6, restMod.getPrecio_Max());
+				pstmt.setString(7, restMod.getCocina());
+				pstmt.setString(8, restMod.getTelefono());
+				pstmt.setString(9, restMod.getWeb());
+				pstmt.setInt(10, restMod.getId());
+				
+				result = pstmt.executeUpdate();
+				
+			} catch (ClassNotFoundException e) {
+				System.out.println("El driver indicado no es correcto");
+				e.printStackTrace();
+			} catch (SQLException e) {
+				System.out.println("Error en la base de datos: sentencia incorrecta");
+				e.printStackTrace();
+			}finally {
+	
+					try {
+						
+						if(pstmt != null)pstmt.close();
+						if(con != null)con.close();
+						
+					} catch (SQLException e) {
+						
+						e.printStackTrace();
+					}
+				
+			}
 		
 		
 		
 		return result;
 	}
 
-	
-
-	
-
-	
 
 }

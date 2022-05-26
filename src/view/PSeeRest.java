@@ -26,9 +26,9 @@ import java.awt.Font;
 
 public class PSeeRest extends JPanel {
 	
-	public static final String [] DISTIN = {"TODAS", "1 Estrella", "2 Estrellas", "3 Estrellas"};
+	
 
-	public static final String REGIONES = "TODAS"; 
+	public static final String TXTREG = "TODAS"; 
 	 
 	public static final int ANCHO = 800;
 	public static final int ALTO = 650;
@@ -81,7 +81,7 @@ public class PSeeRest extends JPanel {
 		
 		cmbDistincion = new JComboBox<String>();
 		cmbDistincion.setBounds(389, 83, 109, 27);
-		cmbDistincion.setModel(new DefaultComboBoxModel<String>(DISTIN));
+		cmbDistincion.setModel(new DefaultComboBoxModel<String>(Rest.DISTIN));
 		add(cmbDistincion);
 		
 		btnSee = new JButton(BTN_SEE);
@@ -108,7 +108,7 @@ public class PSeeRest extends JPanel {
 	public void fillCmbRegion(ArrayList<String> listRegiones) {
 		
 		cmbModel.removeAllElements();
-		cmbModel.addElement(REGIONES);
+		cmbModel.addElement(TXTREG);
 		cmbModel.addAll(listRegiones);
 	}
 	

@@ -4,7 +4,13 @@ package model;
 
 public class Rest {
 	
+	public static final String [] REGIONES = {"Andalucía","Aragón","Asturias",	"Islas Baleares", "Cantabria",
+			"Islas Canarias","Cantabria", "Castilla - La Mancha", "Castilla y León", "Cataluña", "Comunidad Valenciana", "Extremadura", "Galicia",  "Madrid", 
+			"Murcia", "Navarra", "País Vasco", "La Rioja", "Ceuta", "Melilla"};
 	
+	public static final String [] COCINA = {"Creativa", "Moderna", "Tradicional", "Regional", "Fusión"};
+	
+	public static final String [] DISTIN = {"TODAS", "1 Estrella", "2 Estrellas", "3 Estrellas"};
 	
 	private int id;
 	private String nombre;	
